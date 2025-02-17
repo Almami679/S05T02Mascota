@@ -1,4 +1,4 @@
-package ItAcademyJavaSpringBoot.Macota.config;
+package ItAcademyJavaSpringBoot.AircraftFleet.config;
 
 import org.springframework.context.annotation.Configuration;
 

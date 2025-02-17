@@ -1,7 +1,7 @@
-package ItAcademyJavaSpringBoot.Macota.controllers;
+package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 
-import ItAcademyJavaSpringBoot.Macota.Services.PetService;
-import ItAcademyJavaSpringBoot.Macota.model.User;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.PetService;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

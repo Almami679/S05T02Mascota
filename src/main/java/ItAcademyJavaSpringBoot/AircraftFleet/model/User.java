@@ -1,4 +1,4 @@
-package ItAcademyJavaSpringBoot.Macota.model;
+package ItAcademyJavaSpringBoot.AircraftFleet.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

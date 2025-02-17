@@ -1,7 +1,7 @@
-package ItAcademyJavaSpringBoot.Macota.Services;
+package ItAcademyJavaSpringBoot.AircraftFleet.Services;
 
 
-import ItAcademyJavaSpringBoot.Macota.repository.PetRespository;
+import ItAcademyJavaSpringBoot.AircraftFleet.repository.PetRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

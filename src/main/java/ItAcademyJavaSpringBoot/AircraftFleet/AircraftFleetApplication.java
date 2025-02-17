@@ -1,14 +1,14 @@
-package ItAcademyJavaSpringBoot.Macota;
+package ItAcademyJavaSpringBoot.AircraftFleet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 
-public class MascotaApplication {
+public class AircraftFleetApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MascotaApplication.class, args);
+		SpringApplication.run(AircraftFleetApplication.class, args);
 	}
 
 }

@@ -1,6 +1,6 @@
-package ItAcademyJavaSpringBoot.Macota.model;
+package ItAcademyJavaSpringBoot.AircraftFleet.model;
 
-import ItAcademyJavaSpringBoot.Macota.model.entityEnums.PetStatus;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entityEnums.PetStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
