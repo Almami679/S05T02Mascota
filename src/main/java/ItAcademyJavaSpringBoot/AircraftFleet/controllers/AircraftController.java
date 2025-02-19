@@ -1,7 +1,6 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 
-import ItAcademyJavaSpringBoot.AircraftFleet.Services.PetService;
-import ItAcademyJavaSpringBoot.AircraftFleet.model.User;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/pet")
-public class PetController {
+@RequestMapping("/aircraft")
+public class AircraftController {
 
     @Autowired
     private PetService petService;

@@ -1,9 +1,12 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.repository;
 
-import ItAcademyJavaSpringBoot.AircraftFleet.model.Pet;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PetRespository extends JpaRepository<Pet, Integer> {
+public interface PlaneRepository extends JpaRepository<Plane, Long> {
+
 }
+
