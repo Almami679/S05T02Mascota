@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 @Service
@@ -45,7 +44,7 @@ public class PlaneService {
 
 
     public Plane getRandomPlaneFromOpponent(User playerOpponent) {
-        List<Plane> planes = hangarService.getAllPlanesForUser(playerOpponent.getHangar().getId());
+        List<Plane> planes = hangarService.getAllPlanesForUser(playerOpponent.getUserName());
 
         if (planes.isEmpty()) {
             throw new PlayerHasNoPlanesException("Player has no planes");

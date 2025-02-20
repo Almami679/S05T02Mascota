@@ -1,6 +1,8 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.UserService.HangarService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.mainService.MainService;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,25 +13,31 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/aircraft")
-public class AircraftController {
+public class HangarController {
 
     @Autowired
     private MainService mainService;
 
+    @Autowired
+    private HangarService hangarService;
 
-    @Operation(summary = "Test SWAGGER")
+
+    @Operation(summary = "Get all planes owned by the user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created Successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
-            @ApiResponse(responseCode = "400", description = "Error")
+            @ApiResponse(responseCode = "200", description = "List of owned planes")
     })
-    @GetMapping("/test")
-    public ResponseEntity<String> test(@Valid @RequestBody String name ) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("This is a test " + name);
+    @GetMapping("/my-planes")
+    public ResponseEntity<List<Plane>> getUserPlanes(@AuthenticationPrincipal UserDetails userDetails) {
+        List<Plane> planes = hangarService.getAllPlanesForUser(userDetails.getUsername());
+        return ResponseEntity.ok(planes);
     }
 
 

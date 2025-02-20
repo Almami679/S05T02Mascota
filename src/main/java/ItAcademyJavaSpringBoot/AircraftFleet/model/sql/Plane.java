@@ -1,5 +1,6 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.storeService.PlaneBuilder;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,19 @@ public class Plane {
     @ManyToOne
     @JoinColumn(name = "hangar_id", nullable = false)
     private Hangar hangar;
+
+    public Plane (String name, String model, int health, int attack, Hangar hangar){
+        this.name = name;
+        this.model = model;
+        this.health = health;
+        this.attack = attack;
+        this.hangar = hangar;
+        this.fuel = 100;
+        this.accessories = new ArrayList<>();
+    }
+
+    public static PlaneBuilder builder() {
+        return new PlaneBuilder();
+    }
 
 }

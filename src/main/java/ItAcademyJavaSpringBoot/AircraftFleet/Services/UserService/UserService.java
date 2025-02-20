@@ -1,6 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.Services.UserService;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NotPlayerAvailableException;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.StoreAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.UserRepository;
@@ -55,6 +56,18 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new NotPlayerAvailableException("Player not found"));
         user.addPoints(score);
+        return userRepository.save(user);
+    }
+
+    public User editUserWallet(Long id, double value, StoreAction action) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new NotPlayerAvailableException("Player not found"));
+
+        if(action.equals(StoreAction.PAY)){
+            user.setWallet(user.getWallet() - value);
+        } else {
+            user.setWallet(user.getWallet() + value);
+        }
         return userRepository.save(user);
     }
 

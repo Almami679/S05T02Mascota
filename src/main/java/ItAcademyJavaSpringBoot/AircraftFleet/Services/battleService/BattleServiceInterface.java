@@ -1,4 +1,4 @@
-package ItAcademyJavaSpringBoot.AircraftFleet.Services.BattleService;
+package ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService;
 
 
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;

@@ -17,12 +17,16 @@ public class HangarService {
     @Autowired
     private HangarRepository hangarRepository;
 
+    @Autowired
+    private UserService userService;
+
     public Hangar createNewHangarUser(User owner) {
         Hangar newHangar = new Hangar(owner);
         return hangarRepository.save(newHangar);
     }
 
-    public List<Plane> getAllPlanesForUser(Long hangarId) {
+    public List<Plane> getAllPlanesForUser(String username) {
+        Long hangarId = userService.findUserByName(username).getHangar().getId();
         return hangarRepository.getAllPlanesForHangarId(hangarId);
 
     }

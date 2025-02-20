@@ -2,7 +2,7 @@ package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 
 
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;
-import ItAcademyJavaSpringBoot.AircraftFleet.Services.BattleService.BattleService;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.BattleService;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.mongoDB.Battle;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
