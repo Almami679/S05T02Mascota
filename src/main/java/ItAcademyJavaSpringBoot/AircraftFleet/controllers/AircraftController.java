@@ -1,5 +1,6 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.mainService.MainService;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AircraftController {
 
     @Autowired
-    private PetService petService;
+    private MainService mainService;
 
 
     @Operation(summary = "Test SWAGGER")

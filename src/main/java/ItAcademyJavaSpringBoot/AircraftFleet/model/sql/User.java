@@ -1,6 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -37,13 +38,14 @@ public class User {
     private double score;
 
     @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JsonIgnore
     private Hangar hangar;
 
     public User(String username, String password, Role role) {
         this.userName = username;
         this.password = password;
         this.role = role;
-        this.wallet = 5000;
+        this.wallet = 15000;
         this.hangar = new Hangar(this);
         this.score = 0;
     }

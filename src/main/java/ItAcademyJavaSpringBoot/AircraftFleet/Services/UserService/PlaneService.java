@@ -3,16 +3,19 @@ package ItAcademyJavaSpringBoot.AircraftFleet.Services.UserService;
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.PlaneDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoPlaneFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.PlaneAccessoryDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlayerHasNoPlanesException;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneAccessoriesRepository;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+@Service
 public class PlaneService {
 
     @Autowired
@@ -20,6 +23,9 @@ public class PlaneService {
 
     @Autowired
     private PlaneAccessoriesRepository accessoriesRepository;
+
+    @Autowired
+    private HangarService hangarService;
 
     public Plane getPlaneById(Long id) {
         return planeRepository.findById(id)
@@ -39,18 +45,10 @@ public class PlaneService {
 
 
     public Plane getRandomPlaneFromOpponent(User playerOpponent) {
-        if (playerOpponent.getHangar() == null || playerOpponent.getHangar().getPlanes_ids().isEmpty()) {
-            throw new IllegalStateException("Player has no planes in the hangar");
-        }
-
-        List<Plane> planes = playerOpponent.getHangar().getPlanes_ids()
-                .stream()
-                .map(this::getPlaneById)
-                .filter(Objects::nonNull)
-                .toList();
+        List<Plane> planes = hangarService.getAllPlanesForUser(playerOpponent.getHangar().getId());
 
         if (planes.isEmpty()) {
-            throw new IllegalStateException("Player has no planes");
+            throw new PlayerHasNoPlanesException("Player has no planes");
         }
 
         return planes.get(new Random().nextInt(planes.size()));
@@ -78,7 +76,6 @@ public class PlaneService {
         Plane dbPlane = planeRepository.getReferenceById(updatedPlane.getId());
         dbPlane.setHealth(updatedPlane.getBaseHealth());
         dbPlane.setFuel(updatedPlane.getFuel());
-        dbPlane.setDestroy(destroy);
         return planeRepository.save(dbPlane);
     }
 

@@ -18,5 +18,6 @@ public class UserInfoDTO {
     private List<PlaneDTO> planes;
     private int battlesWon;
     private int battlesLost;
+
 }
 

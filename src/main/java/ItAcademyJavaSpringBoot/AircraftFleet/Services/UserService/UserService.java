@@ -4,11 +4,14 @@ import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NotPlayerAvailableExcept
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.UserRepository;
+import ItAcademyJavaSpringBoot.AircraftFleet.security.DTO.AuthRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
 
+@Service
 public class UserService {
 
     @Autowired
@@ -16,6 +19,16 @@ public class UserService {
 
     @Autowired
     private PlaneService planeService;
+
+    @Autowired
+    private HangarService hangarService;
+
+    public User addNewUser(AuthRequestDTO newUser) {
+        User userCreated = new User(newUser.getUserName(), newUser.getPassword(), newUser.getRole());
+        userRepository.save(userCreated);
+        userCreated.setHangar(hangarService.createNewHangarUser(userCreated));
+        return userRepository.save(userCreated);
+    }
 
 
     public User getRandomPlayer() {
@@ -28,9 +41,9 @@ public class UserService {
 
 
     public Plane getRandomPlaneFromOpponent(User playerOpponent) {
-        List<Plane> planes = playerOpponent.getHangar().getPlanes_ids()
+        List<Plane> planes = playerOpponent.getHangar().getPlanes()
                 .stream()
-                .map(planeService::getPlaneById)
+                .map(plane -> planeService.getPlaneById(plane.getId()))
                 .toList();
         if (planes.isEmpty()) {
             throw new IllegalStateException("Player has no planes");
@@ -43,5 +56,13 @@ public class UserService {
                 () -> new NotPlayerAvailableException("Player not found"));
         user.addPoints(score);
         return userRepository.save(user);
+    }
+
+    public boolean userIsPresent(String username) {
+        return findUserByName(username) != null;
+    }
+
+    public User findUserByName(String username) {
+        return userRepository.findByUserName(username);
     }
 }

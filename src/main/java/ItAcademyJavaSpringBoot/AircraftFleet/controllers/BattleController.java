@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class BattleController {
             @ApiResponse(responseCode = "400", description = "Bad request")
     })
     @PostMapping("/fight")
-    public ResponseEntity<Battle> createBattle(@RequestBody BattlePlayerDTO playerDTO) {
+    public ResponseEntity<Battle> createBattle(@RequestBody BattlePlayerDTO playerDTO, Authentication authentication) {
         Battle newBattle = battleService.createNewBattle(playerDTO);
         return ResponseEntity.ok(battleService.addBattle(newBattle));
 

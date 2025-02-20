@@ -35,5 +35,6 @@ public class Plane {
 
     @ManyToOne
     @JoinColumn(name = "hangar_id", nullable = false)
-    private Long hangarId;
+    private Hangar hangar;
+
 }
