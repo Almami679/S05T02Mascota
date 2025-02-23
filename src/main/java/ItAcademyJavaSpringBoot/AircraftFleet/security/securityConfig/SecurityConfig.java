@@ -28,11 +28,14 @@ public class SecurityConfig {
                         ).permitAll()
 
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/aircraft/store/**").authenticated()
+                        .requestMatchers("/aircraft/hangar/**").authenticated()
+                        .requestMatchers("/aircraft/battle/**").authenticated()
 
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless para JWT
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
 
         return http.build();

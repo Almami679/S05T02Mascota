@@ -1,7 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums;
 
-public enum Weather {
-    SOLEADO,
-    NUBLADO,
-    TORMENTA
+public enum PlaneAction {
+    REPAIR,
+    REFUEL,
+    CHANGESKIN
 }

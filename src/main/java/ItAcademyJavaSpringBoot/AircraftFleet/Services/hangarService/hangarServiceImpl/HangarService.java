@@ -1,5 +1,7 @@
-package ItAcademyJavaSpringBoot.AircraftFleet.Services.UserService;
+package ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.HangarServiceInterface;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Hangar;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class HangarService {
+public class HangarService implements HangarServiceInterface {
 
     @Autowired
     private HangarRepository hangarRepository;
@@ -29,6 +31,23 @@ public class HangarService {
         Long hangarId = userService.findUserByName(username).getHangar().getId();
         return hangarRepository.getAllPlanesForHangarId(hangarId);
 
+    }
+
+    public Hangar addPlaneInHangar(Long userId, Plane plane) {
+        Hangar hangar = userService.findUserById(userId).getHangar();
+        hangar.addPlaneInHangar(plane);
+        return hangarRepository.save(hangar);
+    }
+
+    public Hangar updateHangarState(Long userId) {
+        User user = userService.findUserById(userId);
+        Hangar hangar = user.getHangar();
+        hangar.updateHangarState();
+        return hangarRepository.save(hangar);
+    }
+
+    public Long getHangarOwnerId(Long id) {
+        return hangarRepository.findById(id).get().getOwner().getId();
     }
 
 

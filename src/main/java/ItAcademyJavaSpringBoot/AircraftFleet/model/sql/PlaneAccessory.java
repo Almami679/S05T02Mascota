@@ -33,6 +33,14 @@ public class PlaneAccessory {
     @JoinColumn(name = "plane_id", nullable = false)
     private Plane plane;
 
+    public PlaneAccessory(AccessoryType type, String name, int level, int power, Plane plane) {
+        this.type = type;
+        this.name = name;
+        this.level = level;
+        this.power = power;
+        this.plane = plane;
+    }
+
 
 }
 

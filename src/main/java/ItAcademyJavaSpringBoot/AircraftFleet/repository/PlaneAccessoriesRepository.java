@@ -9,8 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PlaneAccessoriesRepository extends JpaRepository<PlaneAccessory, Long> {
-
-    @Query("SELECT p FROM PlaneAccessory p WHERE p.plane.id = :planeId")
-    List<PlaneAccessory> getAllAccessoriesForPlane(@Param("planeId") Long planeId);
+public interface PlaneAccessoriesRepository extends JpaRepository<PlaneAccessory, Integer> {
 }

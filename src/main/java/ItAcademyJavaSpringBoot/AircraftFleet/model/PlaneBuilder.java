@@ -1,4 +1,4 @@
-package ItAcademyJavaSpringBoot.AircraftFleet.Services.storeService;
+package ItAcademyJavaSpringBoot.AircraftFleet.model;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Hangar;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
@@ -27,16 +27,6 @@ public class PlaneBuilder {
 
     public PlaneBuilder setAttack(int attack) {
         this.attack = attack;
-        return this;
-    }
-
-    public PlaneBuilder setFuel(int fuel) {
-        this.fuel = fuel;
-        return this;
-    }
-
-    public PlaneBuilder setPrice(double price) {
-        this.price = price;
         return this;
     }
 

@@ -5,13 +5,16 @@ import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.PlaneDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.mongoDB.Battle;
 
+import java.util.List;
+
 public interface BattleServiceInterface {
-    Long getNextId();
-    Battle addBattle(Long userId1, Long userId2, Long planeId1, Long planeId2);
-    Battle getBattle(Long id);
-    Battle executeBattle(Battle battle);
-    BattlePlayerDTO determinateWinner(BattlePlayerDTO player1, BattlePlayerDTO player2);
+    BattlePlayerDTO findOpponent(Long userId);
+    List<Battle> getAllBattles();
+    Battle startBattle(Long userId, Long userPlaneId, BattlePlayerDTO opponent);
+    Battle executeBattle(BattlePlayerDTO player1, BattlePlayerDTO player2);
+    BattlePlayerDTO determineWinner(BattlePlayerDTO player1, BattlePlayerDTO player2);
     double calculateWinProbability(PlaneDTO plane1, PlaneDTO plane2);
-    void defineScore(BattlePlayerDTO player1, BattlePlayerDTO player2, BattlePlayerDTO winner);
+    void applyBattleResults(BattlePlayerDTO player1, BattlePlayerDTO player2, BattlePlayerDTO winner);
+    List<Battle> getBattlesByUser(String username);
 
 }

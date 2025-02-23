@@ -1,5 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.DTO;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.AccessoryType;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.PlaneAccessory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,30 +11,28 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class PlaneDTO {
-    private Long id;
-    private String name;
-    private String model;
-    private int baseHealth;
-    private int baseAttack;
+    private Long planeId;
+    private int health;
+    private int attack;
     private int fuel;
-    private List<PlaneAccessoryDTO> accessories;
 
-    public int getTotalHealth() {
-        int bonusHealth = accessories.stream()
-                .filter(a -> "Health_Boost".equalsIgnoreCase(a.getType()))
-                .mapToInt(PlaneAccessoryDTO::getBonus)
-                .sum();
-        return baseHealth + bonusHealth;
+    public PlaneDTO (Long planeId, int health, int attack, int fuel, PlaneAccessory accessory) {
+        this.planeId = planeId;
+        this.health = health;
+        this.attack = attack;
+        this.fuel = fuel;
+        if(accessory != null) {
+            getStatsWithBonus(accessory);
+        }
     }
 
-    public int getTotalAttack() {
-        int bonusAttack = accessories.stream()
-                .filter(a -> "Attack_Boost".equalsIgnoreCase(a.getType()))
-                .mapToInt(PlaneAccessoryDTO::getBonus)
-                .sum();
-        return baseAttack + bonusAttack;
+    public void getStatsWithBonus(PlaneAccessory accessory) {
+        if(accessory.getType()== AccessoryType.GUN){
+            this.attack += accessory.getPower();
+        } else {
+            this.health += accessory.getPower();
+        }
     }
+
 }

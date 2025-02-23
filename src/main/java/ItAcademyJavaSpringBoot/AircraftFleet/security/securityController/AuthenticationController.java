@@ -1,6 +1,6 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.security.securityController;
 
-import ItAcademyJavaSpringBoot.AircraftFleet.Services.UserService.UserService;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.UsernameIsInUseException;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.security.DTO.AuthRequestDTO;

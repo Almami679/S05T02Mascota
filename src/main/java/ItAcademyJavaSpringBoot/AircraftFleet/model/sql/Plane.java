@@ -1,13 +1,11 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 
-import ItAcademyJavaSpringBoot.AircraftFleet.Services.storeService.PlaneBuilder;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.PlaneBuilder;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "planes")
@@ -27,12 +25,15 @@ public class Plane {
     @Getter
     private int health;
     @Getter
+    private int baseHealth;
+    @Getter
     private int attack;
     @Getter
     private int fuel;
 
-    @Getter
-    private ArrayList<Long> accessories;
+    @OneToOne
+    @JoinColumn(name = "equipped_accessory", unique = true)
+    private PlaneAccessory equippedAccessory;
 
     @ManyToOne
     @JoinColumn(name = "hangar_id", nullable = false)
@@ -42,14 +43,30 @@ public class Plane {
         this.name = name;
         this.model = model;
         this.health = health;
+        this.baseHealth = health;
         this.attack = attack;
         this.hangar = hangar;
         this.fuel = 100;
-        this.accessories = new ArrayList<>();
+        this.equippedAccessory = null;
     }
 
     public static PlaneBuilder builder() {
         return new PlaneBuilder();
     }
 
+    public void repair(){
+        this.health = this.baseHealth;
+    }
+
+    public void refuel(){
+        this.fuel = 100;
+    }
+
+    public void equipAccessory(PlaneAccessory newAccessory) {
+        if (this.equippedAccessory != null) {
+            this.equippedAccessory.setPlane(null);
+        }
+        this.equippedAccessory = newAccessory;
+        newAccessory.setPlane(this);
+    }
 }

@@ -2,6 +2,7 @@ package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.TimeOfDay;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.Weather;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +21,9 @@ public class Hangar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User owner;
 
     @Enumerated(EnumType.STRING)
@@ -47,5 +49,9 @@ public class Hangar {
     private Weather getRandomWeather() {
         Weather[] weathers = Weather.values();
         return weathers[new Random().nextInt(weathers.length)];
+    }
+
+    public void addPlaneInHangar(Plane plane) {
+        this.planes.add(plane);
     }
 }
