@@ -16,5 +16,6 @@ public interface BattleServiceInterface {
     double calculateWinProbability(PlaneDTO plane1, PlaneDTO plane2);
     void applyBattleResults(BattlePlayerDTO player1, BattlePlayerDTO player2, BattlePlayerDTO winner);
     List<Battle> getBattlesByUser(String username);
+    int getNextId();
 
 }

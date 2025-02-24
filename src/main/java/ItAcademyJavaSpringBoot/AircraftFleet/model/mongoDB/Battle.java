@@ -1,11 +1,10 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.mongoDB;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.battleServiceImpl.BattleService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,12 +15,16 @@ import java.util.Date;
 @Setter
 @Document(collection = "battles")
 @Schema(description = "Battle entity representing a battle between two players")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Battle {
+
+
 
     @Id
     @Schema(description = "Battle ID", example = "1")
     @Getter
-    private Long id;
+    private int id;
 
     @NotNull
     @Schema(description = "Player 1 in the battle")

@@ -14,7 +14,7 @@ public class PlaneAccessory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -29,16 +29,11 @@ public class PlaneAccessory {
     @Column(nullable = false)
     private int power;
 
-    @ManyToOne
-    @JoinColumn(name = "plane_id", nullable = false)
-    private Plane plane;
-
-    public PlaneAccessory(AccessoryType type, String name, int level, int power, Plane plane) {
+    public PlaneAccessory(AccessoryType type, String name, int level, int power) {
         this.type = type;
         this.name = name;
         this.level = level;
         this.power = power;
-        this.plane = plane;
     }
 
 

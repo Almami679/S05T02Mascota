@@ -3,6 +3,7 @@ package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.TimeOfDay;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.Weather;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,8 @@ public class Hangar {
     @Enumerated(EnumType.STRING)
     private Weather weather;
 
-   @OneToMany(mappedBy = "hangar", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hangar", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Plane> planes;
 
     public Hangar(User owner) {

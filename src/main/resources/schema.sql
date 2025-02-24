@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS planes (
     attack INT NOT NULL,
     fuel INT NOT NULL,
     hangar_id BIGINT NOT NULL,
-    accessory_id BIGINT DEFAULT NULL,
+    equipped_accessory BIGINT DEFAULT NULL,
     FOREIGN KEY (hangar_id) REFERENCES hangars(id) ON DELETE CASCADE,
-    FOREIGN KEY (accessory_id) REFERENCES plane_accessories(id) ON DELETE SET NULL
+    FOREIGN KEY (equipped_accessory) REFERENCES plane_accessories(id) ON DELETE SET NULL
 );
 

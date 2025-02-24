@@ -2,9 +2,11 @@ package ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.planeService
 
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl.HangarService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.PlaneServiceInterface;
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.AccessoryNotFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoAccessoryFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoPlaneFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlayerHasNoPlanesException;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAccessoryModel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneModel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
@@ -15,6 +17,7 @@ import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -70,10 +73,8 @@ public class PlaneService implements PlaneServiceInterface {
         return planeRepository.save(plane);
     }
 
-    public Plane equipAccessoryToPlane(Long planeId, int accessoryId) {
+    public Plane equipAccessoryToPlane(Long planeId, PlaneAccessory accessory) {
         Plane plane = getPlaneById(planeId);
-        PlaneAccessory accessory = accessoriesRepository.findById(accessoryId)
-                .orElseThrow(() -> new NoAccessoryFoundException("Accessory not found"));
 
         plane.equipAccessory(accessory);
 
@@ -87,6 +88,11 @@ public class PlaneService implements PlaneServiceInterface {
             case CHANGESKIN -> {} //QUE POLLAS TENGO QUE HACER PARA LA SKINS
         }
         return planeRepository.save(plane);
+    }
+
+    public PlaneAccessory getAccessoryForId(int accessoryId) {
+        return accessoriesRepository.findById(accessoryId)
+                .orElseThrow(() -> new AccessoryNotFoundException("El accesorio no existe"));
     }
 }
 

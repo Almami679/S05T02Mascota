@@ -7,10 +7,12 @@ import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.planeServiceI
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class BattlesDTOConstructors implements BattlesDTOConstructorsInterface {
     @Autowired
     private UserService userService;

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BattleService implements BattleServiceInterface {
@@ -50,12 +51,13 @@ public class BattleService implements BattleServiceInterface {
         BattlePlayerDTO player1DTO = constructors.userToDto(userId, userPlaneId);
 
         Battle battle = executeBattle(player1DTO, opponent);
+        battle.setId(getNextId());
 
         return battleRepository.save(battle);
     }
 
     public Battle executeBattle(BattlePlayerDTO player1, BattlePlayerDTO player2) {
-        logger.info("Executing battle between {} and {}", player1.getUsername(), player2.getUsername());
+        logger.info("Executing battle between [{}] VS [{}]", player1.getUsername(), player2.getUsername());
 
         BattlePlayerDTO winner = determineWinner(player1, player2);
         Battle battle = new Battle(player1, player2);
@@ -67,17 +69,23 @@ public class BattleService implements BattleServiceInterface {
     }
 
     public BattlePlayerDTO determineWinner(BattlePlayerDTO player1, BattlePlayerDTO player2) {
+        logger.info("determinate Winner...");
         double probWinPlayer1 = calculateWinProbability(player1.getPlane(), player2.getPlane());
+        logger.info("probability for win the battle [{}]",probWinPlayer1);
         return (Math.random() < probWinPlayer1) ? player1 : player2;
     }
 
     public double calculateWinProbability(PlaneDTO plane1, PlaneDTO plane2) {
+        logger.info("calculating probability...");
         double score1 = plane1.getAttack() * 0.6 + plane1.getHealth() * 0.4;
         double score2 = plane2.getAttack() * 0.6 + plane2.getHealth() * 0.4;
         return score1 / (score1 + score2);
     }
 
     public void applyBattleResults(BattlePlayerDTO player1, BattlePlayerDTO player2, BattlePlayerDTO winner) {
+        logger.info("Winner is [{}], Apply result...",winner.getUsername());
+        logger.info("PlaneId 1 [{}], PlaneId 2 [{}]",player1.getPlane().getPlaneId(), player2.getPlane().getPlaneId());
+
         if (player1.equals(winner)) {
             planeService.applyBattlePlaneStatus(player1.getPlane().getPlaneId(), true);
             planeService.applyBattlePlaneStatus(player2.getPlane().getPlaneId(), false);
@@ -92,7 +100,19 @@ public class BattleService implements BattleServiceInterface {
     }
 
     public List<Battle> getBattlesByUser(String username) {
-        return battleRepository.findByUser1_UsernameOrUser2_Username(username, username);
+        List<Battle> allBattles = battleRepository.findAll();
+        return allBattles.stream()
+                .filter(battle ->
+                        (battle.getUser1().getUsername().equals(username) ||
+                                battle.getUser2().getUsername().equals(username))
+                )
+                .toList();
+    }
+
+    public int getNextId(){
+        return battleRepository.findTopByOrderByIdDesc()
+                .map(battle -> battle.getId() + 1)
+                .orElse(1);
     }
 }
 

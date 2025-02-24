@@ -1,6 +1,8 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.model.PlaneBuilder;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAccessoryModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +39,7 @@ public class Plane {
 
     @ManyToOne
     @JoinColumn(name = "hangar_id", nullable = false)
+    @JsonBackReference
     private Hangar hangar;
 
     public Plane (String name, String model, int health, int attack, Hangar hangar){
@@ -63,10 +66,6 @@ public class Plane {
     }
 
     public void equipAccessory(PlaneAccessory newAccessory) {
-        if (this.equippedAccessory != null) {
-            this.equippedAccessory.setPlane(null);
-        }
         this.equippedAccessory = newAccessory;
-        newAccessory.setPlane(this);
     }
 }

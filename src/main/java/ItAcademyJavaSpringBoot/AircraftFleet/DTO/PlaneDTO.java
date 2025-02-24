@@ -1,6 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.DTO;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.AccessoryType;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAccessoryModel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.PlaneAccessory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlaneDTO {
     private Long planeId;
     private int health;

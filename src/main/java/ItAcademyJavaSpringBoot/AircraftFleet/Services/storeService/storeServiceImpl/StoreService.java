@@ -10,7 +10,9 @@ import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneModel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.StoreAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Hangar;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.PlaneAccessory;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
+import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneAccessoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,9 @@ public class StoreService implements StoreServiceInterface {
     @Autowired
     private PlaneService planeService;
 
+    @Autowired
+    private PlaneAccessoriesRepository accessoryRepository;
+
     public Hangar buyPlane(Long userId, PlaneModel model) {
         User user = userService.findUserById(userId);
         userService.updateWallet(userId, model.getPrice(), StoreAction.PAY);
@@ -41,15 +46,16 @@ public class StoreService implements StoreServiceInterface {
                         .createPlanePurchasedByUser(user, model));
     }
 
-    public Plane buyAndEquipAccessory(Long userId, Long planeId, String accessoryName) {
-        PlaneAccessoryModel accessoryModel = Arrays.stream(PlaneAccessoryModel.values())
-                .filter(a -> a.getName().equalsIgnoreCase(accessoryName))
-                .findFirst()
-                .orElseThrow(() -> new AccessoryNotFoundException("El accesorio no existe"));
+    public Plane buyAndEquipAccessory(Long userId, Long planeId, PlaneAccessoryModel accessory) {
+        PlaneAccessory accessoryEntity = planeService.getAccessoryForId(accessory.getId());
 
-        userService.updateWallet(userId, accessoryModel.getPrice(), StoreAction.PAY);
-        return planeService.equipAccessoryToPlane(planeId, accessoryModel.getId());
+        userService.updateWallet(userId, accessory.getPrice(), StoreAction.PAY);
+
+        return planeService.equipAccessoryToPlane(planeId, accessoryEntity);
+
     }
+
+
 
     public List<Map<String, Object>> getAvailablePlanes() {
         return Arrays.stream(PlaneModel.values())

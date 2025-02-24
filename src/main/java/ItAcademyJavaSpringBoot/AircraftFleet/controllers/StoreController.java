@@ -1,6 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.storeService.storeServiceImpl.StoreService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAccessoryModel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneModel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Hangar;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
@@ -72,10 +73,10 @@ public class StoreController {
     public ResponseEntity<Plane> buyAndEquipAccessory(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam Long planeId,
-            @RequestParam String accessoryName) {
+            @RequestParam PlaneAccessoryModel planeAccessory) {
 
         User user = userService.findUserByName(userDetails.getUsername());
-        return ResponseEntity.ok(storeService.buyAndEquipAccessory(user.getId(), planeId, accessoryName));
+        return ResponseEntity.ok(storeService.buyAndEquipAccessory(user.getId(), planeId, planeAccessory));
     }
 
     @Operation(summary = "Add credits to user's wallet")

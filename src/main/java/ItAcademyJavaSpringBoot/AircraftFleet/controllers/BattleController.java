@@ -80,6 +80,8 @@ public class BattleController {
             @ApiResponse(responseCode = "404", description = "No battles found for the user")
     })
     @GetMapping("/user")
+
+    ///MEJOR DEVOLVER UN DTO SIN TANTA INFORMACION
     public ResponseEntity<List<Battle>> getBattlesByUser(
             @AuthenticationPrincipal UserDetails userDetails) {
 
