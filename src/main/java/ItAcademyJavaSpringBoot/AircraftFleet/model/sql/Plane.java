@@ -1,5 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.HealthPlaneIsFullException;
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlaneHasFullFuel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.PlaneBuilder;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAccessoryModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -22,7 +24,6 @@ public class Plane {
     private Long id;
 
     private String name;
-    private String model;
 
     @Getter
     private int health;
@@ -42,9 +43,8 @@ public class Plane {
     @JsonBackReference
     private Hangar hangar;
 
-    public Plane (String name, String model, int health, int attack, Hangar hangar){
+    public Plane (String name, int health, int attack, Hangar hangar){
         this.name = name;
-        this.model = model;
         this.health = health;
         this.baseHealth = health;
         this.attack = attack;
@@ -58,10 +58,16 @@ public class Plane {
     }
 
     public void repair(){
+        if(health == baseHealth){
+            throw new HealthPlaneIsFullException("This plane health is 100%");
+        }
         this.health = this.baseHealth;
     }
 
     public void refuel(){
+        if(fuel == 100){
+            throw new PlaneHasFullFuel("This plane has full Tank");
+        }
         this.fuel = 100;
     }
 

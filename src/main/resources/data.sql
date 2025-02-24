@@ -7,10 +7,9 @@ INSERT INTO plane_accessories (type, name, level, power) VALUES
  ('ARMOR', 'Blindaje Medio', 2, 35),
  ('ARMOR', 'Blindaje Pesado', 3, 50);
 
- DELETE FROM planes;
  INSERT INTO planes (name, model, health, base_health, attack, fuel, hangar_id, accessory_id) VALUES
    -- Para el usuario con id 7 (Almami)
-   ('Supermarine Spitfire', 'Famoso caza británico de la RAF', 120, 120, 75, 100, 13, NULL),
+   ('Spitfire', 'Famoso caza británico de la RAF', 120, 120, 75, 100, 13, NULL),
    ('Messerschmitt Bf 109', 'Caza alemán versátil y rápido', 110, 110, 80, 100, 13, 4),
 
    -- Para el usuario con id 8 (Irene)

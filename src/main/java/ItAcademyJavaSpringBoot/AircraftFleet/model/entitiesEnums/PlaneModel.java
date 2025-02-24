@@ -1,10 +1,13 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoPlaneFoundException;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 public enum PlaneModel {
-    SPITFIRE("Supermarine Spitfire",
+    SPITFIRE("Spitfire",
             "Famoso caza británico de la RAF",
             120, 75, 2500.0),
     MESSERSCHMITT_BF109("Messerschmitt Bf 109",
@@ -35,5 +38,13 @@ public enum PlaneModel {
         this.health = health;
         this.attack = attack;
         this.price = price;
+    }
+
+    public static Double getPriceByPlaneName(String selectedPlane) {
+        return Arrays.stream(PlaneModel.values())
+                .filter(plane -> plane.getName().equalsIgnoreCase(selectedPlane))
+                .findFirst()
+                .map(PlaneModel::getPrice)
+                .orElseThrow(() -> new NoPlaneFoundException("Plane not found with name " + selectedPlane));
     }
 }

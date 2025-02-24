@@ -2,13 +2,13 @@ package ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.planeService
 
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl.HangarService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.PlaneServiceInterface;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.AccessoryNotFoundException;
-import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoAccessoryFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoPlaneFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlayerHasNoPlanesException;
-import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAccessoryModel;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneModel;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.StoreAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.PlaneAccessory;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
@@ -17,7 +17,6 @@ import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -29,6 +28,9 @@ public class PlaneService implements PlaneServiceInterface {
 
     @Autowired
     private PlaneAccessoriesRepository accessoriesRepository;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private HangarService hangarService;
@@ -64,7 +66,6 @@ public class PlaneService implements PlaneServiceInterface {
     public Plane createPlanePurchasedByUser(User user, PlaneModel model) {
         Plane plane = Plane.builder()
                 .setName(model.getName())
-                .setModel(model.name())
                 .setHealth(model.getHealth())
                 .setAttack(model.getAttack())
                 .setHangar(user.getHangar())
@@ -81,18 +82,30 @@ public class PlaneService implements PlaneServiceInterface {
         return planeRepository.save(plane);
     }
 
-    public Plane updatePlaneStats(Plane plane, PlaneAction action) {
-        switch (action) {
-            case REFUEL -> plane.refuel();
-            case REPAIR -> plane.repair();
-            case CHANGESKIN -> {} //QUE POLLAS TENGO QUE HACER PARA LA SKINS
+    public Plane updatePlaneStats(Long planeId, PlaneAction action) {
+        Plane plane = getPlaneById(planeId);
+        if (action == PlaneAction.SELL) {
+            sellPlane(plane);
+            return plane;
+        } else {
+            switch (action) {
+                case REFUEL -> plane.refuel();
+                case REPAIR -> plane.repair();
+            }
+            return planeRepository.save(plane);
         }
-        return planeRepository.save(plane);
     }
 
     public PlaneAccessory getAccessoryForId(int accessoryId) {
         return accessoriesRepository.findById(accessoryId)
                 .orElseThrow(() -> new AccessoryNotFoundException("El accesorio no existe"));
+    }
+
+    public void sellPlane(Plane plane) {
+        Long userId = plane.getHangar().getOwner().getId();
+        double price = PlaneModel.getPriceByPlaneName(plane.getName()) / 2;
+        userService.updateWallet(userId, price, StoreAction.ADD);
+        planeRepository.delete(plane);
     }
 }
 

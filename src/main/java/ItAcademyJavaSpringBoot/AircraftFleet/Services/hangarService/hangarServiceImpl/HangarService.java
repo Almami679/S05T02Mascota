@@ -46,9 +46,8 @@ public class HangarService implements HangarServiceInterface {
         return hangarRepository.save(hangar);
     }
 
-    public Long getHangarOwnerId(Long id) {
-        return hangarRepository.findById(id).get().getOwner().getId();
+    public List<Hangar> getAllHangars(){
+        return hangarRepository.findAll();
     }
-
 
 }

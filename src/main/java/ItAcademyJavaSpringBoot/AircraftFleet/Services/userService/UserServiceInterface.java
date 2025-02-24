@@ -4,6 +4,8 @@ import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.StoreAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.security.DTO.AuthRequestDTO;
 
+import java.util.List;
+
 public interface UserServiceInterface {
     User addNewUser(AuthRequestDTO newUser);
     User findUserById(Long id);

@@ -2,6 +2,8 @@ package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 
 
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattleResultDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.DTO.RankingDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.battleServiceImpl.BattleService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.mongoDB.Battle;
@@ -79,15 +81,24 @@ public class BattleController {
             @ApiResponse(responseCode = "200", description = "List of battles for the user"),
             @ApiResponse(responseCode = "404", description = "No battles found for the user")
     })
-    @GetMapping("/user")
-
-    ///MEJOR DEVOLVER UN DTO SIN TANTA INFORMACION
-    public ResponseEntity<List<Battle>> getBattlesByUser(
+    @GetMapping("/byUser")
+    public ResponseEntity<List<BattleResultDTO>> getBattlesByUser(
             @AuthenticationPrincipal UserDetails userDetails) {
 
-        List<Battle> userBattles = battleService.getBattlesByUser(userDetails.getUsername());
+        List<BattleResultDTO> userBattles = battleService.getBattlesByUser(userDetails.getUsername());
 
         return ResponseEntity.ok(userBattles);
+    }
+
+    @Operation(summary = "Get Rancking")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rancking"),
+            @ApiResponse(responseCode = "404", description = "No users in database")
+    })
+    @GetMapping("/ranking")
+    public ResponseEntity<List<RankingDTO>> getRanking() {
+        List<RankingDTO> ranking = userService.getRankingByScoreDesc();
+        return ResponseEntity.ok(ranking);
     }
 }
 

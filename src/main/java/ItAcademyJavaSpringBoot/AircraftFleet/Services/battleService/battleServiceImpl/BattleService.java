@@ -2,7 +2,9 @@ package ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.battleServi
 
 
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattleResultDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.PlaneDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.DTOConstructors;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.BattleServiceInterface;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.planeServiceImpl.PlaneService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BattleService implements BattleServiceInterface {
@@ -30,7 +31,7 @@ public class BattleService implements BattleServiceInterface {
     private UserService userService;
 
     @Autowired
-    BattlesDTOConstructors constructors;
+    DTOConstructors constructors;
 
     @Autowired
     private PlaneService planeService;
@@ -99,15 +100,16 @@ public class BattleService implements BattleServiceInterface {
         }
     }
 
-    public List<Battle> getBattlesByUser(String username) {
+    public List<BattleResultDTO> getBattlesByUser(String username) {
         List<Battle> allBattles = battleRepository.findAll();
         return allBattles.stream()
-                .filter(battle ->
-                        (battle.getUser1().getUsername().equals(username) ||
-                                battle.getUser2().getUsername().equals(username))
-                )
+                .filter(battle -> battle.getUser1().getUsername().equals(username)
+                        || battle.getUser2().getUsername().equals(username))
+                .map(battle -> constructors.getResultDTO(username, battle))
                 .toList();
     }
+
+
 
     public int getNextId(){
         return battleRepository.findTopByOrderByIdDesc()

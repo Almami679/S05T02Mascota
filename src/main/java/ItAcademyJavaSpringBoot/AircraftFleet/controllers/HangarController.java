@@ -1,11 +1,18 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.controllers;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.DTOConstructors;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl.HangarService;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.planeServiceImpl.PlaneService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoHavePermissionsException;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAction;
+import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.Role;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Hangar;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,6 +35,12 @@ public class HangarController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PlaneService planeService;
+
+    @Autowired
+    private DTOConstructors dtoConstructors;
 
     @Operation(summary = "Get all planes in the user's hangar")
     @ApiResponses(value = {
@@ -55,4 +68,40 @@ public class HangarController {
 
         return ResponseEntity.ok(updatedHangar);
     }
+
+    @Operation(summary = "Update Plane in Hangar")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Hangar state updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User or Hangar not found")
+    })
+    @PutMapping("/update-plane/{planeId}")
+    public ResponseEntity<Plane> updatePlaneInHangar(@AuthenticationPrincipal UserDetails userDetails,
+                                                      @Parameter(description = "ID of the user's plane")
+                                                      @PathVariable Long planeId,
+                                                      @RequestParam PlaneAction action) {
+
+        User user = userService.findUserByName(userDetails.getUsername());
+        Plane updatedPlane = planeService.updatePlaneStats(planeId, action);
+
+        return ResponseEntity.ok(updatedPlane);
+    }
+
+    @Operation(summary = "Get all Planes (ADMIN)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Hangar state updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User or Hangar not found")
+    })
+    @GetMapping("/AllPlanes")
+    public ResponseEntity<List<BattlePlayerDTO>> getAllPlanes(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findUserByName(userDetails.getUsername());
+        if(!user.getRole().equals(Role.ADMIN)){
+            throw new NoHavePermissionsException("You don't have ADMIN permissions");
+        }
+        List<BattlePlayerDTO> planes = dtoConstructors.getDTOForAllPlanes(hangarService.getAllHangars());
+
+        return ResponseEntity.ok(planes);
+
+    }
+
+
 }

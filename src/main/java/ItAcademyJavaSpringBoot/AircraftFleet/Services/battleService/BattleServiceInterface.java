@@ -2,6 +2,7 @@ package ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService;
 
 
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattlePlayerDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.DTO.BattleResultDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.PlaneDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.mongoDB.Battle;
 
@@ -15,7 +16,7 @@ public interface BattleServiceInterface {
     BattlePlayerDTO determineWinner(BattlePlayerDTO player1, BattlePlayerDTO player2);
     double calculateWinProbability(PlaneDTO plane1, PlaneDTO plane2);
     void applyBattleResults(BattlePlayerDTO player1, BattlePlayerDTO player2, BattlePlayerDTO winner);
-    List<Battle> getBattlesByUser(String username);
+    List<BattleResultDTO> getBattlesByUser(String username);
     int getNextId();
 
 }

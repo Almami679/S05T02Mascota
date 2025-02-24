@@ -1,5 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.DTO.RankingDTO;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.DTOConstructors;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl.HangarService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.UserServiceInterface;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.InsufficientCreditsException;
@@ -22,6 +24,10 @@ public class UserService implements UserServiceInterface {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    @Lazy
+    private DTOConstructors constructor;
 
     @Autowired
     @Lazy //esto hace que no se quede en loop cargando el servicio
@@ -76,6 +82,12 @@ public class UserService implements UserServiceInterface {
 
     public boolean userIsPresent(String username) {
         return userRepository.existsByUserName(username);
+    }
+
+    public List<RankingDTO> getRankingByScoreDesc() {
+        return userRepository.findAllByOrderByScoreDesc().stream()
+                .map(user -> constructor.mapToDTO(user))
+                .collect(Collectors.toList());
     }
 }
 

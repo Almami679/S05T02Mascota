@@ -44,7 +44,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
-//    public User getUserDetail(){
-//
-//    }
+
 }
