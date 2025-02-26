@@ -34,13 +34,6 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
 
-//    public AuthenticationController(AuthenticationManager authenticationManager, UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder) {
-//        this.authenticationManager = authenticationManager;
-//        this.userService = userService;
-//        this.jwtService = jwtService;
-//        this.passwordEncoder = passwordEncoder;
-//    }
-
     @Operation(summary = "Register a new user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User registered successfully",

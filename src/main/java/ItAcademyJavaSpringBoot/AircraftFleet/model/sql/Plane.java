@@ -1,9 +1,8 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.model.sql;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.HealthPlaneIsFullException;
-import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlaneHasFullFuel;
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlaneHasFullFuelException;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.PlaneBuilder;
-import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAccessoryModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -66,7 +65,7 @@ public class Plane {
 
     public void refuel(){
         if(fuel == 100){
-            throw new PlaneHasFullFuel("This plane has full Tank");
+            throw new PlaneHasFullFuelException("This plane has full Tank");
         }
         this.fuel = 100;
     }

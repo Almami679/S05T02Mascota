@@ -27,10 +27,10 @@ public class HangarService implements HangarServiceInterface {
         return hangarRepository.save(newHangar);
     }
 
-    public List<Plane> getAllPlanesForUser(String username) {
-        Long hangarId = userService.findUserByName(username).getHangar().getId();
-        return hangarRepository.getAllPlanesForHangarId(hangarId);
-
+    public Hangar getAllPlanesForUser(String username) {
+        Hangar hangar = userService.findUserByName(username).getHangar();
+        hangar.updateHangarState();
+        return hangarRepository.save(hangar);
     }
 
     public Hangar addPlaneInHangar(Long userId, Plane plane) {

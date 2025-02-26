@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface HangarServiceInterface {
     Hangar createNewHangarUser(User owner);
-    List<Plane> getAllPlanesForUser(String username);
+    Hangar getAllPlanesForUser(String username);
     Hangar addPlaneInHangar(Long userId, Plane plane);
     Hangar updateHangarState(Long userId);
 }

@@ -41,7 +41,7 @@ public class PlaneService implements PlaneServiceInterface {
     }
 
     public Plane getRandomPlaneFromOpponent(User playerOpponent) {
-        List<Plane> planes = hangarService.getAllPlanesForUser(playerOpponent.getUserName());
+        List<Plane> planes = hangarService.getAllPlanesForUser(playerOpponent.getUserName()).getPlanes();
 
         if (planes.isEmpty()) {
             throw new PlayerHasNoPlanesException("Player has no planes");

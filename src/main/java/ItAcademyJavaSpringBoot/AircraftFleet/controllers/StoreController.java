@@ -70,13 +70,14 @@ public class StoreController {
             @ApiResponse(responseCode = "400", description = "User does not have enough credits or accessory not found")
     })
     @PostMapping("/buy/accessory")
-    public ResponseEntity<Plane> buyAndEquipAccessory(
+    public ResponseEntity<User> buyAndEquipAccessory(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam Long planeId,
             @RequestParam PlaneAccessoryModel planeAccessory) {
 
         User user = userService.findUserByName(userDetails.getUsername());
-        return ResponseEntity.ok(storeService.buyAndEquipAccessory(user.getId(), planeId, planeAccessory));
+        storeService.buyAndEquipAccessory(user.getId(), planeId, planeAccessory);
+        return ResponseEntity.ok(user);
     }
 
     @Operation(summary = "Add credits to user's wallet")

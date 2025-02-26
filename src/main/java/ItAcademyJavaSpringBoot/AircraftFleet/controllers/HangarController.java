@@ -48,11 +48,11 @@ public class HangarController {
             @ApiResponse(responseCode = "404", description = "Hangar not found for user")
     })
     @GetMapping("/planes")
-    public ResponseEntity<List<Plane>> getHangarPlanes(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Hangar> getHangarPlanes(@AuthenticationPrincipal UserDetails userDetails) {
 
-        List<Plane> planes = hangarService.getAllPlanesForUser(userDetails.getUsername());
+        Hangar hangar = hangarService.getAllPlanesForUser(userDetails.getUsername());
 
-        return ResponseEntity.ok(planes);
+        return ResponseEntity.ok(hangar);
     }
 
     @Operation(summary = "Update hangar state (time of day & weather)")
@@ -101,6 +101,19 @@ public class HangarController {
 
         return ResponseEntity.ok(planes);
 
+    }
+
+    @Operation(summary = "Get user by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User detected"),
+            @ApiResponse(responseCode = "404", description = "User or Hangar not found")
+    })
+    @GetMapping("/user")
+    public ResponseEntity<User> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+
+        User user = userService.findUserByName(userDetails.getUsername());
+        user.getHangar().updateHangarState();
+        return ResponseEntity.ok(user);
     }
 
 
