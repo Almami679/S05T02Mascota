@@ -75,15 +75,14 @@ public class HangarController {
             @ApiResponse(responseCode = "404", description = "User or Hangar not found")
     })
     @PutMapping("/update-plane/{planeId}")
-    public ResponseEntity<Plane> updatePlaneInHangar(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<User> updatePlaneInHangar(@AuthenticationPrincipal UserDetails userDetails,
                                                       @Parameter(description = "ID of the user's plane")
                                                       @PathVariable Long planeId,
                                                       @RequestParam PlaneAction action) {
 
         User user = userService.findUserByName(userDetails.getUsername());
-        Plane updatedPlane = planeService.updatePlaneStats(planeId, action);
-
-        return ResponseEntity.ok(updatedPlane);
+        planeService.updatePlaneStats(planeId, action, user.getId());
+        return ResponseEntity.ok(user);
     }
 
     @Operation(summary = "Get all Planes (ADMIN)")
@@ -112,7 +111,7 @@ public class HangarController {
     public ResponseEntity<User> getUser(@AuthenticationPrincipal UserDetails userDetails) {
 
         User user = userService.findUserByName(userDetails.getUsername());
-        user.getHangar().updateHangarState();
+        hangarService.updateHangarState(user.getId());
         return ResponseEntity.ok(user);
     }
 

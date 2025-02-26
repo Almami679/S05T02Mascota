@@ -16,7 +16,7 @@ public interface PlaneServiceInterface {
     void applyBattlePlaneStatus(Long planeId, boolean wonBattle);
     Plane createPlanePurchasedByUser(User user, PlaneModel model);
     Plane equipAccessoryToPlane(Long planeId, PlaneAccessory accessory);
-    Plane updatePlaneStats(Long planeId, PlaneAction action);
+    Plane updatePlaneStats(Long planeId, PlaneAction action, Long userId);
     PlaneAccessory getAccessoryForId(int accessoryId);
     void sellPlane(Plane plane);
 }

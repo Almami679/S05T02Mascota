@@ -30,7 +30,8 @@ public class DTOConstructors implements DTOConstructorsInterface {
                 plane.getHealth(),
                 plane.getAttack(),
                 plane.getFuel(),
-                plane.getEquippedAccessory());
+                plane.getEquippedAccessory(),
+                plane.getName());
     }
 
     public BattlePlayerDTO userToDto(Long userId, Long planeId) {

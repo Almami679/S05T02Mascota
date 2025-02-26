@@ -44,7 +44,7 @@ public class PlaneService implements PlaneServiceInterface {
         List<Plane> planes = hangarService.getAllPlanesForUser(playerOpponent.getUserName()).getPlanes();
 
         if (planes.isEmpty()) {
-            throw new PlayerHasNoPlanesException("Player has no planes");
+            return null;
         }
 
         return planes.get(new Random().nextInt(planes.size()));
@@ -82,15 +82,21 @@ public class PlaneService implements PlaneServiceInterface {
         return planeRepository.save(plane);
     }
 
-    public Plane updatePlaneStats(Long planeId, PlaneAction action) {
+    public Plane updatePlaneStats(Long planeId, PlaneAction action, Long userId) {
         Plane plane = getPlaneById(planeId);
         if (action == PlaneAction.SELL) {
             sellPlane(plane);
             return plane;
         } else {
             switch (action) {
-                case REFUEL -> plane.refuel();
-                case REPAIR -> plane.repair();
+                case REFUEL -> {
+                    plane.refuel();
+                    userService.updateWallet(userId, 500, StoreAction.PAY);
+                }
+                case REPAIR -> {
+                    plane.repair();
+                    userService.updateWallet(userId, 800, StoreAction.PAY);
+                }
             }
             return planeRepository.save(plane);
         }

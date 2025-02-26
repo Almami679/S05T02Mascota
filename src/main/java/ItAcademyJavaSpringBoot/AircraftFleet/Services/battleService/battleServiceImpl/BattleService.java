@@ -43,7 +43,9 @@ public class BattleService implements BattleServiceInterface {
     public BattlePlayerDTO findOpponent(Long userId) {
         User opponent = userService.getRandomOpponent(userId);
         Plane opponentPlane = planeService.getRandomPlaneFromOpponent(opponent);
-
+        if(opponentPlane == null) {
+            return(findOpponent(userId));
+        }
         return constructors.userToDto(opponent.getId(), opponentPlane.getId());
     }
 

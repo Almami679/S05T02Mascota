@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum PlaneAccessoryModel {
 
     MG_42(1,AccessoryType.GUN, "MG 42", 1, 50, 500.0),
-    CANNON_20MM(3,AccessoryType.GUN, "Cañón 20mm Hispano", 2, 80, 750.0),
+    CANNON_20MM(2,AccessoryType.GUN, "Cañón 20mm Hispano", 2, 80, 750.0),
     COHETES_V2(3,AccessoryType.GUN, "Cohete V2 Alemán", 3, 120, 1200.0),
 
     LIGHT_ARMOR(4, AccessoryType.ARMOR, "Blindaje Ligero", 1, 20, 400.0),
