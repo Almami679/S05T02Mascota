@@ -35,7 +35,7 @@ public class PlaneDTO {
         this.attack = attack;
         this.fuel = fuel;
         this.name = name;
-        this.planeAccessory = getPlaneAccessory();
+        this.planeAccessory = accessory;
         if(accessory != null) {
             getStatsWithBonus(accessory);
         }

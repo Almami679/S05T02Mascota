@@ -15,6 +15,10 @@ public class PlaneBuilder {
         return this;
     }
 
+    public PlaneBuilder setModel(String model) {
+        this.model = model;
+        return this;
+    }
 
     public PlaneBuilder setHealth(int health) {
         this.health = health;
@@ -32,7 +36,7 @@ public class PlaneBuilder {
     }
 
     public Plane build() {
-        return new Plane(name, health, attack, hangar);
+        return new Plane(name, model, health, attack, hangar);
     }
 }
 

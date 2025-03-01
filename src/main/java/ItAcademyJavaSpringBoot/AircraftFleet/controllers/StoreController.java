@@ -58,8 +58,7 @@ public class StoreController {
     @PostMapping("/buy/plane")
     public ResponseEntity<Hangar> buyPlane(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam PlaneModel model) {
-
+            @RequestParam String model) {
         User user = userService.findUserByName(userDetails.getUsername());
         return ResponseEntity.ok(storeService.buyPlane(user.getId(), model));
     }

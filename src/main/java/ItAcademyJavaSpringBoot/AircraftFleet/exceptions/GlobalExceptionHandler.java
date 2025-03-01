@@ -69,6 +69,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(PlaneNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePlaneNotFoundException(PlaneNotFoundException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(UsernameIsInUseException.class)
     public ResponseEntity<Map<String, String>> handleUsernameIsInUse(UsernameIsInUseException ex) {
         // 409 (CONFLICT) si el nombre de usuario ya está en uso

@@ -18,5 +18,5 @@ public interface PlaneServiceInterface {
     Plane equipAccessoryToPlane(Long planeId, PlaneAccessory accessory);
     Plane updatePlaneStats(Long planeId, PlaneAction action, Long userId);
     PlaneAccessory getAccessoryForId(int accessoryId);
-    void sellPlane(Plane plane);
+    void sellPlane(Long planeId);
 }

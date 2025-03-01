@@ -5,6 +5,7 @@ import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.PlaneServiceI
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.AccessoryNotFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.NoPlaneFoundException;
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlaneNotFoundException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PlayerHasNoPlanesException;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.PlaneModel;
@@ -66,6 +67,7 @@ public class PlaneService implements PlaneServiceInterface {
     public Plane createPlanePurchasedByUser(User user, PlaneModel model) {
         Plane plane = Plane.builder()
                 .setName(model.getName())
+                .setModel(model.getDescription())
                 .setHealth(model.getHealth())
                 .setAttack(model.getAttack())
                 .setHangar(user.getHangar())
@@ -85,7 +87,7 @@ public class PlaneService implements PlaneServiceInterface {
     public Plane updatePlaneStats(Long planeId, PlaneAction action, Long userId) {
         Plane plane = getPlaneById(planeId);
         if (action == PlaneAction.SELL) {
-            sellPlane(plane);
+            sellPlane(plane.getId());
             return plane;
         } else {
             switch (action) {
@@ -107,7 +109,8 @@ public class PlaneService implements PlaneServiceInterface {
                 .orElseThrow(() -> new AccessoryNotFoundException("El accesorio no existe"));
     }
 
-    public void sellPlane(Plane plane) {
+    public void sellPlane(Long planeId) {
+        Plane plane = planeRepository.findById(planeId).orElseThrow(() -> new PlaneNotFoundException("Avion no encontrado"));
         Long userId = plane.getHangar().getOwner().getId();
         double price = PlaneModel.getPriceByPlaneName(plane.getName()) / 2;
         userService.updateWallet(userId, price, StoreAction.ADD);

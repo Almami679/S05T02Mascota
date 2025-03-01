@@ -42,17 +42,16 @@ public class HangarController {
     @Autowired
     private DTOConstructors dtoConstructors;
 
-    @Operation(summary = "Get all planes in the user's hangar")
+    @Operation(summary = "Get user plane by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of planes in the hangar"),
             @ApiResponse(responseCode = "404", description = "Hangar not found for user")
     })
-    @GetMapping("/planes")
-    public ResponseEntity<Hangar> getHangarPlanes(@AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping("/plane/{planeId}")
+    public ResponseEntity<Plane> getHangarPlanes(@AuthenticationPrincipal UserDetails userDetails,
+                                                  @PathVariable Long planeId) {
 
-        Hangar hangar = hangarService.getAllPlanesForUser(userDetails.getUsername());
-
-        return ResponseEntity.ok(hangar);
+        return ResponseEntity.ok(planeService.getPlaneById(planeId));
     }
 
     @Operation(summary = "Update hangar state (time of day & weather)")
@@ -112,6 +111,21 @@ public class HangarController {
 
         User user = userService.findUserByName(userDetails.getUsername());
         hangarService.updateHangarState(user.getId());
+        return ResponseEntity.ok(user);
+    }
+
+
+    @Operation(summary = "Sell Plane in Hangar (delete)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Hangar state updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User or Hangar not found")
+    })
+    @PutMapping("/sell/plane/{planeId}")
+    public ResponseEntity<User> sellPlaneInHangar(@AuthenticationPrincipal UserDetails userDetails,
+                                                    @Parameter(description = "ID of the user's plane")
+                                                    @PathVariable Long planeId) {
+        planeService.sellPlane(planeId);
+        User user = userService.findUserByName(userDetails.getUsername());
         return ResponseEntity.ok(user);
     }
 

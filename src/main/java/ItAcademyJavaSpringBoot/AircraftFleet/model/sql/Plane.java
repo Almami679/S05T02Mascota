@@ -24,14 +24,17 @@ public class Plane {
 
     private String name;
 
-    @Getter
+    private String model;
+
     private int health;
-    @Getter
+
     private int baseHealth;
-    @Getter
+
     private int attack;
-    @Getter
+
     private int fuel;
+
+
 
     @OneToOne
     @JoinColumn(name = "equipped_accessory", unique = true)
@@ -42,8 +45,9 @@ public class Plane {
     @JsonBackReference
     private Hangar hangar;
 
-    public Plane (String name, int health, int attack, Hangar hangar){
+    public Plane (String name,String model, int health, int attack, Hangar hangar){
         this.name = name;
+        this.model = model;
         this.health = health;
         this.baseHealth = health;
         this.attack = attack;

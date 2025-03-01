@@ -51,10 +51,12 @@ public class UserService implements UserServiceInterface {
 
     public User updateWallet(Long userId, double amount, StoreAction action) {
         User user = findUserById(userId);
-        if (action == StoreAction.PAY && user.getWallet() < amount) {
-            throw new InsufficientCreditsException("Saldo insuficiente para comprar.");
+        if(user.getRole() != Role.ADMIN) {
+            if (action == StoreAction.PAY && user.getWallet() < amount) {
+                throw new InsufficientCreditsException("Saldo insuficiente para comprar.");
+            }
+            user.setWallet(action == StoreAction.PAY ? user.getWallet() - amount : user.getWallet() + amount);
         }
-        user.setWallet(action == StoreAction.PAY ? user.getWallet() - amount : user.getWallet() + amount);
         return userRepository.save(user);
     }
 

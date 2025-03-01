@@ -72,7 +72,6 @@ public class BattleController {
 
         User user = userService.findUserByName(userDetails.getUsername());
         Battle battle = battleService.startBattle(user.getId(), planeId, opponentDTO);
-
         return ResponseEntity.ok(battle);
     }
 

@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS planes (
     name VARCHAR(100) NOT NULL,
     model VARCHAR(100) NOT NULL,
     health INT NOT NULL,
+    base_health INT NOT NULL,
     attack INT NOT NULL,
     fuel INT NOT NULL,
     hangar_id BIGINT NOT NULL,
@@ -39,4 +40,3 @@ CREATE TABLE IF NOT EXISTS planes (
     FOREIGN KEY (hangar_id) REFERENCES hangars(id) ON DELETE CASCADE,
     FOREIGN KEY (equipped_accessory) REFERENCES plane_accessories(id) ON DELETE SET NULL
 );
-
