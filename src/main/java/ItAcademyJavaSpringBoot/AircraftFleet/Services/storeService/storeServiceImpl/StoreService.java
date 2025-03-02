@@ -36,18 +36,14 @@ public class StoreService implements StoreServiceInterface {
     @Autowired
     private PlaneAccessoriesRepository accessoryRepository;
 
-    public Hangar buyPlane(Long userId, String modelName) {
+    public Hangar buyPlane(Long userId, PlaneModel modelName) {
         User user = userService.findUserById(userId);
-        PlaneModel modelSelected = Arrays.stream(PlaneModel.values())
-                .filter(model -> model.getName().equalsIgnoreCase(modelName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Modelo de avión no válido: " + modelName));
 
-        userService.updateWallet(userId, modelSelected.getPrice(), StoreAction.PAY);
+        userService.updateWallet(userId, modelName.getPrice(), StoreAction.PAY);
 
         return hangarService.addPlaneInHangar(
                 userId,
-                planeService.createPlanePurchasedByUser(user, modelSelected)
+                planeService.createPlanePurchasedByUser(user, modelName)
         );
     }
 

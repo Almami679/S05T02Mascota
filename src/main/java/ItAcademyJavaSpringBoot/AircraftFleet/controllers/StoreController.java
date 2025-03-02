@@ -56,11 +56,12 @@ public class StoreController {
             @ApiResponse(responseCode = "400", description = "User does not have enough credits")
     })
     @PostMapping("/buy/plane")
-    public ResponseEntity<Hangar> buyPlane(
+    public ResponseEntity<User> buyPlane(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam String model) {
+            @RequestParam PlaneModel model) {
         User user = userService.findUserByName(userDetails.getUsername());
-        return ResponseEntity.ok(storeService.buyPlane(user.getId(), model));
+        storeService.buyPlane(user.getId(), model);
+        return ResponseEntity.ok(user);
     }
 
     @Operation(summary = "Buy and equip an accessory to a plane")
