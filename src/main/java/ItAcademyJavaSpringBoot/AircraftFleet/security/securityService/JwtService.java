@@ -63,6 +63,9 @@ public class JwtService {
     }
 
     public Claims extractAllClaims(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("Token JWT vacío o nulo");
+        }
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
