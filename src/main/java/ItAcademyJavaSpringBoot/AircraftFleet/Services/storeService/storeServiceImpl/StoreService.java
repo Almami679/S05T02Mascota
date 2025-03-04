@@ -1,5 +1,6 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.Services.storeService.storeServiceImpl;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.battleServiceImpl.BattleService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.storeService.StoreServiceInterface;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl.HangarService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.planeServiceImpl.PlaneService;
@@ -13,6 +14,8 @@ import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.PlaneAccessory;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneAccessoriesRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class StoreService implements StoreServiceInterface {
+
+    private static final Logger log = LoggerFactory.getLogger(StoreService.class);
 
     @Autowired
     private UserService userService;
@@ -41,6 +46,8 @@ public class StoreService implements StoreServiceInterface {
 
         userService.updateWallet(userId, modelName.getPrice(), StoreAction.PAY);
 
+        log.info("Plane {} bought by {}", modelName.getName(), user.getUserName());
+
         return hangarService.addPlaneInHangar(
                 userId,
                 planeService.createPlanePurchasedByUser(user, modelName)
@@ -52,6 +59,8 @@ public class StoreService implements StoreServiceInterface {
 
         userService.updateWallet(userId, accessory.getPrice(), StoreAction.PAY);
 
+        log.info("Accessory {} bought by user with id {}", accessory.getName(),userId );
+
         return planeService.equipAccessoryToPlane(planeId, accessoryEntity);
 
     }
@@ -59,6 +68,7 @@ public class StoreService implements StoreServiceInterface {
 
 
     public List<Map<String, Object>> getAvailablePlanes() {
+        log.info("Download Model planes for store");
         return Arrays.stream(PlaneModel.values())
                 .map(model -> Map.<String, Object>of(
                         "name", model.getName(),
@@ -71,6 +81,7 @@ public class StoreService implements StoreServiceInterface {
     }
 
     public List<Map<String, Object>> getAvailableAccessories() {
+        log.info("Download Accessory models for store");
         return Arrays.stream(PlaneAccessoryModel.values())
                 .map(accessory -> Map.<String, Object>of(
                         "name", accessory.getName(),

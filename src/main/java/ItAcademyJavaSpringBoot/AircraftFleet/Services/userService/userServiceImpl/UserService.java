@@ -2,6 +2,7 @@ package ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceIm
 
 import ItAcademyJavaSpringBoot.AircraftFleet.DTO.RankingDTO;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.DTOConstructors;
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.battleServiceImpl.BattleService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl.HangarService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.UserServiceInterface;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.InsufficientCreditsException;
@@ -11,6 +12,8 @@ import ItAcademyJavaSpringBoot.AircraftFleet.model.entitiesEnums.StoreAction;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.UserRepository;
 import ItAcademyJavaSpringBoot.AircraftFleet.security.DTO.AuthRequestDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserServiceInterface {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -37,6 +42,7 @@ public class UserService implements UserServiceInterface {
         User userCreated = new User(newUser.getUserName(), newUser.getPassword(), newUser.getRole());
         userRepository.save(userCreated);
         userCreated.setHangar(hangarService.createNewHangarUser(userCreated));
+        log.info("New user added: {}", userCreated.getUserName());
         return userRepository.save(userCreated);
     }
 
@@ -57,16 +63,19 @@ public class UserService implements UserServiceInterface {
             }
             user.setWallet(action == StoreAction.PAY ? user.getWallet() - amount : user.getWallet() + amount);
         }
+        log.info("Action {} with {} amount for player {}, in progres",action, amount, user.getUserName());
         return userRepository.save(user);
     }
 
     public void addScore(Long userId, double score) {
         User user = findUserById(userId);
         user.addPoints(score);
+        log.info("{}'s Score modified success", user.getUserName());
         userRepository.save(user);
     }
 
     public User addCredits(Long userId, double coins) {
+        log.info("{} coins added to userId{}'s wallet", coins, userId);
         return updateWallet(userId, coins, StoreAction.ADD);
     }
 
@@ -79,6 +88,7 @@ public class UserService implements UserServiceInterface {
             throw new NotPlayerAvailableException("No opponents available");
         }
 
+        log.info("Random player found");
         return players.get(new Random().nextInt(players.size()));
     }
 

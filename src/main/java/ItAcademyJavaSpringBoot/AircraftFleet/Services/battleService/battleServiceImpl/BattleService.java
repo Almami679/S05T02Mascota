@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class BattleService implements BattleServiceInterface {
 
-    private static final Logger logger = LoggerFactory.getLogger(BattleService.class);
+    private static final Logger log = LoggerFactory.getLogger(BattleService.class);
 
     @Autowired
     private BattleRepository battleRepository;
@@ -46,6 +46,7 @@ public class BattleService implements BattleServiceInterface {
         if(opponentPlane == null) {
             return(findOpponent(userId));
         }
+        log.info("Opponent find: [name {}] | [planeId: {}]",opponent.getUserName(), opponentPlane.getId());
         return constructors.userToDto(opponent.getId(), opponentPlane.getId());
     }
 
@@ -55,12 +56,12 @@ public class BattleService implements BattleServiceInterface {
 
         Battle battle = executeBattle(player1DTO, opponent);
         battle.setId(getNextId());
-
+        log.info("start Battle, with id {}, for player {}", battle.getId(), userId);
         return battleRepository.save(battle);
     }
 
     public Battle executeBattle(BattlePlayerDTO player1, BattlePlayerDTO player2) {
-        logger.info("Executing battle between [{}] VS [{}]", player1.getUsername(), player2.getUsername());
+        log.info("Executing battle between [{}] VS [{}]", player1.getUsername(), player2.getUsername());
 
         BattlePlayerDTO winner = determineWinner(player1, player2);
         Battle battle = new Battle(player1, player2);
@@ -72,22 +73,22 @@ public class BattleService implements BattleServiceInterface {
     }
 
     public BattlePlayerDTO determineWinner(BattlePlayerDTO player1, BattlePlayerDTO player2) {
-        logger.info("determinate Winner...");
+        log.info("determinate Winner...");
         double probWinPlayer1 = calculateWinProbability(player1.getPlane(), player2.getPlane());
-        logger.info("probability for win the battle [{}]",probWinPlayer1);
+        log.info("probability for win the battle [{}]",probWinPlayer1);
         return (Math.random() < probWinPlayer1) ? player1 : player2;
     }
 
     public double calculateWinProbability(PlaneDTO plane1, PlaneDTO plane2) {
-        logger.info("calculating probability...");
+        log.info("calculating probability...");
         double score1 = plane1.getAttack() * 0.6 + plane1.getHealth() * 0.4;
         double score2 = plane2.getAttack() * 0.6 + plane2.getHealth() * 0.4;
         return score1 / (score1 + score2);
     }
 
     public void applyBattleResults(BattlePlayerDTO player1, BattlePlayerDTO player2, BattlePlayerDTO winner) {
-        logger.info("Winner is [{}], Apply result...",winner.getUsername());
-        logger.info("PlaneId 1 [{}], PlaneId 2 [{}]",player1.getPlane().getPlaneId(), player2.getPlane().getPlaneId());
+        log.info("Winner is [{}], Apply result...",winner.getUsername());
+        log.info("PlaneId 1 [{}], PlaneId 2 [{}]",player1.getPlane().getPlaneId(), player2.getPlane().getPlaneId());
 
         if (player1.equals(winner)) {
             planeService.applyBattlePlaneStatus(player1.getPlane().getPlaneId(), true);

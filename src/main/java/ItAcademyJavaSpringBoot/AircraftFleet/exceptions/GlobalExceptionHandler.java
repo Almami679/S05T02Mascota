@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(AccessoryNotFoundException.class)
@@ -87,20 +88,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        log.error("Error due to designated value NULL: {}", e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGlobalException(Exception e) {
-        log.error("Unexpected error: {}", e.getMessage());
         return new ResponseEntity<>("An unexpected error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    private ResponseEntity<Map<String, String>> buildErrorResponse(String message, HttpStatus status) {
-        Map<String, String> body = new HashMap<>();
-        body.put("message", message);
-        return ResponseEntity.status(status).body(body);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -108,6 +101,13 @@ public class GlobalExceptionHandler {
         Map<String, String> body = new HashMap<>();
         body.put("message", "Credenciales erróneas");
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    private ResponseEntity<Map<String, String>> buildErrorResponse(String message, HttpStatus status) {
+        Map<String, String> body = new HashMap<>();
+        body.put("message", message);
+        log.error("Error: {} | Status: {}",message, status);
+        return ResponseEntity.status(status).body(body);
     }
 
 }

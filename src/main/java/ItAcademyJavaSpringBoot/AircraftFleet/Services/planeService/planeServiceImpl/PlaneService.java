@@ -1,5 +1,6 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.planeServiceImpl;
 
+import ItAcademyJavaSpringBoot.AircraftFleet.Services.battleService.battleServiceImpl.BattleService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.hangarService.hangarServiceImpl.HangarService;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.planeService.PlaneServiceInterface;
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
@@ -15,6 +16,8 @@ import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.PlaneAccessory;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneAccessoriesRepository;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,8 @@ import java.util.Random;
 
 @Service
 public class PlaneService implements PlaneServiceInterface {
+
+    private static final Logger log = LoggerFactory.getLogger(PlaneService.class);
 
     @Autowired
     private PlaneRepository planeRepository;
@@ -59,6 +64,7 @@ public class PlaneService implements PlaneServiceInterface {
             plane.setFuel(0);
             plane.setHealth(30 + (int) (Math.random() * 61));
             planeRepository.save(plane);
+            log.info("Battle finished, plane stats: heath[{}], fuel[{}]",plane.getHealth(), plane.getFuel());
         } else {
             planeRepository.delete(plane);
         }
@@ -73,6 +79,8 @@ public class PlaneService implements PlaneServiceInterface {
                 .setHangar(user.getHangar())
                 .build();
 
+        log.info("Plane {} created for user {}", plane.getName(), user.getUserName());
+
         return planeRepository.save(plane);
     }
 
@@ -80,6 +88,8 @@ public class PlaneService implements PlaneServiceInterface {
         Plane plane = getPlaneById(planeId);
 
         plane.equipAccessory(accessory);
+
+        log.info("Accessory {} added to plane with id {}", accessory.getName(), plane.getId());
 
         return planeRepository.save(plane);
     }
@@ -94,10 +104,12 @@ public class PlaneService implements PlaneServiceInterface {
                 case REFUEL -> {
                     plane.refuel();
                     userService.updateWallet(userId, 500, StoreAction.PAY);
+                    log.info("Plane refuel success");
                 }
                 case REPAIR -> {
                     plane.repair();
                     userService.updateWallet(userId, 800, StoreAction.PAY);
+                    log.info("plane repair success");
                 }
             }
             return planeRepository.save(plane);
@@ -114,6 +126,7 @@ public class PlaneService implements PlaneServiceInterface {
         Long userId = plane.getHangar().getOwner().getId();
         double price = PlaneModel.getPriceByPlaneName(plane.getName()) / 2;
         userService.updateWallet(userId, price, StoreAction.ADD);
+        log.info("Plane with id {} sell success", plane.getId());
         planeRepository.delete(plane);
     }
 }
