@@ -12,7 +12,7 @@ public interface UserServiceInterface {
     User findUserByName(String username);
     User updateWallet(Long userId, double amount, StoreAction action);
     void addScore(Long userId, double score);
-    User addCredits(Long userId, double coins);
+    User addCredits(Long userId);
     User getRandomOpponent(Long userId);
     boolean userIsPresent(String username);
 }

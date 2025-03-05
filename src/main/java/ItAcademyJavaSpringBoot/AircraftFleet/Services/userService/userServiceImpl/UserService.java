@@ -15,6 +15,7 @@ import ItAcademyJavaSpringBoot.AircraftFleet.security.DTO.AuthRequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -74,9 +75,16 @@ public class UserService implements UserServiceInterface {
         userRepository.save(user);
     }
 
-    public User addCredits(Long userId, double coins) {
-        log.info("{} coins added to userId{}'s wallet", coins, userId);
-        return updateWallet(userId, coins, StoreAction.ADD);
+    public User addCredits(Long userId) {
+        User user = findUserById(userId);
+        if(user.getScore() < 1000) {
+            throw new InsufficientCreditsException("El score del usuario es insuficiente");
+        }else {
+            log.info("1000 coins added to userId{}'s wallet", userId);
+            user.setScore(user.getScore()-1000);
+            userRepository.save(user);
+            return updateWallet(userId,1000, StoreAction.ADD);
+        }
     }
 
     public User getRandomOpponent(Long userId) {
@@ -92,6 +100,7 @@ public class UserService implements UserServiceInterface {
         return players.get(new Random().nextInt(players.size()));
     }
 
+    @Cacheable("User is present in db")
     public boolean userIsPresent(String username) {
         return userRepository.existsByUserName(username);
     }

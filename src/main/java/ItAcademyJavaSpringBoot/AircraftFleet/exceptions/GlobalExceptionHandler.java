@@ -81,6 +81,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(PasswordWithInvalidFormatException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidFormatPassword(PasswordWithInvalidFormatException ex) {
+        // 400 (CONFLICT) si el nombre de usuario ya está en uso
+        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException ex) {
         return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);

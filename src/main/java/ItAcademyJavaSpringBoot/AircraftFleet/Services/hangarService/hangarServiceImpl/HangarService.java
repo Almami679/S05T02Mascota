@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class HangarService implements HangarServiceInterface {
         return hangarRepository.save(newHangar);
     }
 
+    @Cacheable("User Planes")
     public Hangar getAllPlanesForUser(String username) {
         Hangar hangar = userService.findUserByName(username).getHangar();
         hangar.updateHangarState();

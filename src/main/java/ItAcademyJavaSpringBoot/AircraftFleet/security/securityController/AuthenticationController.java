@@ -1,6 +1,7 @@
 package ItAcademyJavaSpringBoot.AircraftFleet.security.securityController;
 
 import ItAcademyJavaSpringBoot.AircraftFleet.Services.userService.userServiceImpl.UserService;
+import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.PasswordWithInvalidFormatException;
 import ItAcademyJavaSpringBoot.AircraftFleet.exceptions.UsernameIsInUseException;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.security.DTO.AuthRequestDTO;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,10 +44,14 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody @Valid AuthRequestDTO request) {
+    public ResponseEntity<User> register(@RequestBody @Valid AuthRequestDTO request, BindingResult bindingResult) {
         if (userService.userIsPresent(request.getUserName())) {
             throw new UsernameIsInUseException("El usuario ya existe");
-        } else {
+
+        } else if(bindingResult.hasErrors()) {
+           throw new PasswordWithInvalidFormatException("Formato de contraseña incorrecto");
+
+        }else {
             request.setPassword(jwtService.passwordEncoder(request.getPassword()));
             User newUser = userService.addNewUser(request);
             return ResponseEntity.ok(newUser);

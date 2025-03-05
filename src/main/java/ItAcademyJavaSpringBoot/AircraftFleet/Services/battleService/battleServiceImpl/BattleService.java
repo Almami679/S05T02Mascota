@@ -15,6 +15,7 @@ import ItAcademyJavaSpringBoot.AircraftFleet.repository.BattleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -113,7 +114,7 @@ public class BattleService implements BattleServiceInterface {
     }
 
 
-
+    @Cacheable("Battles ides")
     public int getNextId(){
         return battleRepository.findTopByOrderByIdDesc()
                 .map(battle -> battle.getId() + 1)

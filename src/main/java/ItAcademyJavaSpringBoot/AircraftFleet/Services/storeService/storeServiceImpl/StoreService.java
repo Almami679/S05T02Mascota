@@ -14,9 +14,11 @@ import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.Plane;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.PlaneAccessory;
 import ItAcademyJavaSpringBoot.AircraftFleet.model.sql.User;
 import ItAcademyJavaSpringBoot.AircraftFleet.repository.PlaneAccessoriesRepository;
+import org.hibernate.annotations.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -66,7 +68,7 @@ public class StoreService implements StoreServiceInterface {
     }
 
 
-
+    @Cacheable("List of planes in store")
     public List<Map<String, Object>> getAvailablePlanes() {
         log.info("Download Model planes for store");
         return Arrays.stream(PlaneModel.values())
@@ -80,6 +82,7 @@ public class StoreService implements StoreServiceInterface {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable("List of accessories")
     public List<Map<String, Object>> getAvailableAccessories() {
         log.info("Download Accessory models for store");
         return Arrays.stream(PlaneAccessoryModel.values())

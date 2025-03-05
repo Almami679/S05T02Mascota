@@ -87,10 +87,9 @@ public class StoreController {
     })
     @PostMapping("/addCredits")
     public ResponseEntity<User> addCredits(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam double amount) {
+            @AuthenticationPrincipal UserDetails userDetails) {
 
         User user = userService.findUserByName(userDetails.getUsername());
-        return ResponseEntity.ok(userService.addCredits(user.getId(), amount));
+        return ResponseEntity.ok(userService.addCredits(user.getId()));
     }
 }
