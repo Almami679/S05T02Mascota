@@ -13,16 +13,15 @@ diseñado para gestionar una flota de aviones de usuarios. Con swguridad JWT ges
 **Proporciona operaciones CRUD (Crear, Leer, Actualizar, Eliminar)**
 y a mas a mas operaciones del propio modelo de negocio de un tipico gestor
 **Proporciona operaciones de negocio:**_
--Creación de usuarios con wallet.
--Compra y gestión de aviones.
--Estados de mejora y nivel de combustible.
--Batallas entre aviones de diferentes usuarios.
--Venta de aviones no deseados.
--Mensajes internos entre jugadores.
-
-Interfaz visual en React con un hangar dinámico, mostrando ciclos de día, noche y clima aleatorio.
-- para manejar los datos de Users, Aviones, Hangares y accesorios se hace a través de una API REST. (Mediante MySQL) 
-- para manejar los datos deBattle se hace a través de una API REST. (MongoDB) _
+>Creación de usuarios con wallet.
+>Compra y gestión de aviones.
+>Estados de mejora y nivel de combustible.
+>Batallas entre aviones de diferentes usuarios.
+>Venta de aviones no deseados.
+>Mensajes internos entre jugadores.
+>Interfaz visual en React con un hangar dinámico mostrando ciclos de día, noche y clima aleatorio.
+>Manejo de los datos de Users, Aviones, Hangares y accesorios se hace a través de una API REST. (Mediante MySQL) 
+>Manejo de los datos de Battle se hace a través de una API REST. (MongoDB) _
 
 
 ## Estructura del Proyecto
@@ -188,15 +187,15 @@ http://localhost:8080/swagger-ui.html
 ```
 Algunos endpoints clave:
 
-POST /auth/register → Registra un nuevo usuario
+>POST /auth/register → Registra un nuevo usuario
 
-POST /auth/login → Autentica y devuelve un JWT
+>POST /auth/login → Autentica y devuelve un JWT
 
-GET /aircraft/hangar/planes → Lista todos los aviones disponibles (ADMIN)
+>GET /aircraft/hangar/planes → Lista todos los aviones disponibles (ADMIN)
 
-POST /aircraft/store/planes/buy → Comprar un avión
+>POST /aircraft/store/planes/buy → Comprar un avión
 
-POST /aircraft/battle → Iniciar una batalla
+>POST /aircraft/battle → Iniciar una batalla
 
 **Logica de accesorios**
 
