@@ -192,11 +192,41 @@ POST /auth/register → Registra un nuevo usuario
 
 POST /auth/login → Autentica y devuelve un JWT
 
-GET /planes → Lista todos los aviones disponibles
+GET /aircraft/hangar/planes → Lista todos los aviones disponibles (ADMIN)
 
-POST /planes/buy → Comprar un avión
+POST /aircraft/store/planes/buy → Comprar un avión
 
-POST /battle → Iniciar una batalla
+POST /aircraft/battle → Iniciar una batalla
+
+**Logica de accesorios**
+
+_Hay tres niveles disponibles de accesorios de GUN y ARMOR,
+cada nivel otorga un suplemento tanto al ataque o a la vida en relacion
+al nivel del accesorio.
+
+Solo se puede tener un accesorio equipado por avion, si se equipa uno se desequipa 
+el que tenia antes.
+
+**Logica de Store**
+
+_Se tiene una wallet asignada a cada user, se pueden añadir fondos intercambiado el score
+cada 1000 puntos de score se añaden 1000 creditos.
+La tienda vende aviones que se crean mediante un builder.
+Si se equipan accesorios se descuenta dinero de la wallet.
+Si se vende el avion del hangar se elimina de la base de datos y se le añaden fondos al usuario
+con el valor de la mitad del precio principal del avión._
+
+**Logica de batalla**
+
+_El sistema selecciona un usuario aleatorio y un avion que le pertenezca,
+te muestra el nombre y el avion y te da la elecion de aceptar batalla o retirarte,
+se calcula una media de la vida y el ataque de tu avion y el oponente, y le da un 60%
+de provavilidad de ganar a avion que tenga mayores stats.
+El avion perdedor se detruye y elimina de la base de datos.
+El avion ganador vuleve al hangar sin conbustible y con una vida aleatoria de entre el 
+30% y el 60%_
+
+Los dos jugadores reciben puntos de score por batalla en relacion al resultado
 
 **Interfaz del Hangar**
 
