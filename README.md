@@ -238,7 +238,7 @@ con nombre del dueño y posibilidades de eliminar, modificar estado
 y añadir accesorio_
 
 ### **Excepciones Personalizadas**
-_ Gestionadas desde el **GlobalEceptionHandler** _
+Gestionadas desde el **GlobalEceptionHandler** 
 >AccessoryNotFoundException.java
 >BattleNotFoundException.java
 >HealthPlaneIsFullException.java
