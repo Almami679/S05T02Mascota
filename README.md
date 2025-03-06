@@ -253,6 +253,12 @@ _ Gestionadas desde el **GlobalEceptionHandler** _
 >PlayerHasNoPlanesException.java
 >UsernameIsInUseException.java
 >UserNotFoundException.java
+>
+### **Tests de integracion**
+>Se incluyen tests de integracion para endpoints de register y login,
+tanto en user y admin y comprobacion de seguridad
+>Test de aviones donde se comprueba la creacion del avion, la venta del mismo y
+añadir accesorio y realizar accion.
 
 ### **Integración con Base de Datos**
 
