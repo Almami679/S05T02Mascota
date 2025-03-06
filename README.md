@@ -180,7 +180,7 @@ Enlace de github del codigo: [Almami BlackJack repository](https://github.com/Al
 ## Funcionalidades
 
 
- **Endpoints**
+### **Endpoints**
 Puedes ver la documentación completa con Swagger en:
 ```
 http://localhost:8080/swagger-ui.html
@@ -197,16 +197,16 @@ Algunos endpoints clave:
 
 >POST /aircraft/battle → Iniciar una batalla
 
-<u>**Logica de accesorios**</u>
+###**Logica de accesorios**
 
 _Hay tres niveles disponibles de accesorios de GUN y ARMOR,
 cada nivel otorga un suplemento tanto al ataque o a la vida en relacion
 al nivel del accesorio.
 
 Solo se puede tener un accesorio equipado por avion, si se equipa uno se desequipa 
-el que tenia antes.
+el que tenia antes._
 
-<u>**Logica de Store**</u>
+###**Logica de Store**
 
 _Se tiene una wallet asignada a cada user, se pueden añadir fondos intercambiado el score
 cada 1000 puntos de score se añaden 1000 creditos.
@@ -215,7 +215,7 @@ Si se equipan accesorios se descuenta dinero de la wallet.
 Si se vende el avion del hangar se elimina de la base de datos y se le añaden fondos al usuario
 con el valor de la mitad del precio principal del avión._
 
-<u>**Logica de batalla**</u>
+###**Logica de batalla**
 
 _El sistema selecciona un usuario aleatorio y un avion que le pertenezca,
 te muestra el nombre y el avion y te da la elecion de aceptar batalla o retirarte,
@@ -227,7 +227,7 @@ El avion ganador vuleve al hangar sin conbustible y con una vida aleatoria de en
 
 Los dos jugadores reciben puntos de score por batalla en relacion al resultado
 
-<u>**Interfaz del Hangar**</u>
+###**Interfaz del Hangar**
 
 _El hangar del usuario muestra sus aviones y se actualiza dinámicamente:
 Ciclo de día y noche basado en una hora real = un día en el juego.
@@ -237,7 +237,7 @@ _El hangar del Admin muestra todos los aviones de la base de datos
 con nombre del dueño y posibilidades de eliminar, modificar estado 
 y añadir accesorio_
 
-<u>**Excepciones Personalizadas**</u>
+<u>**Excepciones Personalizadas**
 _ Gestionadas desde el **GlobalEceptionHandler** _
 >AccessoryNotFoundException.java
 >BattleNotFoundException.java
@@ -254,7 +254,7 @@ _ Gestionadas desde el **GlobalEceptionHandler** _
 >UsernameIsInUseException.java
 >UserNotFoundException.java
 
-<u>**Integración con Base de Datos**<U/>
+###**Integración con Base de Datos**
 
 >Ya que en mongo no tenemos forma de gestionar el Id en autoincrement, he aadido un servicio
 >que nos devuelve el ultimo Id de la base de datos para gestionarlo en el constructor de game/new
